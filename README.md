@@ -5,8 +5,8 @@ It's a simple library,you don't need to override anything
 
  the following code is usage:
  
- recyclerList.layoutManager=StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+ # recyclerList.layoutManager=StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
  
- val adapter=AdapterWraper(DataItemAdapter(dataList))
+ # val adapter=AdapterWraper(DataItemAdapter(dataList))
  
- recyclerList.adapter=adapter
+ # recyclerList.adapter=adapter
