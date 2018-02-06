@@ -56,7 +56,7 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
         return when
         {
             isHeadView(viewType) -> WraperViewHolder(headViews[viewType])
-            isFootView(viewType) -> WraperViewHolder(footViews[viewType-adapter.itemCount-headViews.size()])
+            isFootView(viewType) -> WraperViewHolder(footViews[viewType - adapter.itemCount - headViews.size()])
             else -> adapter.onCreateViewHolder(parent, 0)
         }
 
@@ -95,7 +95,7 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
 
         if (TYPE_DATA == getItemViewType(position))
         {
-            adapter.onBindViewHolder(holder as T, position-headViews.size())
+            adapter.onBindViewHolder(holder as T, position - headViews.size())
         }
 
 
@@ -104,20 +104,20 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView?)
     {
         super.onAttachedToRecyclerView(recyclerView)
-        val layoutManager=recyclerView?.layoutManager
-        if(layoutManager!=null)
+        val layoutManager = recyclerView?.layoutManager
+        if (layoutManager != null)
         {
-            if(layoutManager is GridLayoutManager )
+            if (layoutManager is GridLayoutManager)
             {
-                layoutManager.spanSizeLookup= object : GridLayoutManager.SpanSizeLookup()
+                layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup()
                 {
                     override fun getSpanSize(position: Int): Int
                     {
-                        if(isHeadView(position))
+                        if (isHeadView(position))
                         {
                             return layoutManager.spanCount
                         }
-                        else if(isFootView(position))
+                        else if (isFootView(position))
                         {
                             return layoutManager.spanCount
                         }
@@ -136,16 +136,16 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
     override fun onViewAttachedToWindow(holder: ViewHolder?)
     {
         super.onViewAttachedToWindow(holder)
-        if(holder!=null)
+        if (holder != null)
         {
             val position = holder.layoutPosition
-            if(isHeadView(position) || isFootView(position))
+            if (isHeadView(position) || isFootView(position))
             {
 
-                val lp=holder.itemView.layoutParams
-                if(lp!=null && lp is StaggeredGridLayoutManager.LayoutParams)
+                val lp = holder.itemView.layoutParams
+                if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams)
                 {
-                    lp.isFullSpan=true
+                    lp.isFullSpan = true
                 }
             }
 
