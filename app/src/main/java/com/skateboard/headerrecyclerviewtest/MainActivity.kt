@@ -26,6 +26,13 @@ class MainActivity : AppCompatActivity()
         adapter.addFootView(LayoutInflater.from(this).inflate(R.layout.head_view_layout,null))
         adapter.addFootView(LayoutInflater.from(this).inflate(R.layout.head_view_layout,null))
         recyclerList.adapter=adapter
+        adapter.loadMoreListener= object : AdapterWraper.OnLoadMoreListener
+        {
+            override fun loadMoreDown()
+            {
+
+            }
+        }
     }
 
     private fun generateData()

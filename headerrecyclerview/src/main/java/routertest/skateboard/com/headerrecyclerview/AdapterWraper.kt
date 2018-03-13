@@ -23,6 +23,8 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
 
     val TYPE_DATA: Int = 100
 
+    var loadMoreListener: OnLoadMoreListener? = null
+
     constructor(adapter: Adapter<T>)
     {
         this.adapter = adapter
@@ -97,9 +99,18 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
         {
             adapter.onBindViewHolder(holder as T, position - headViews.size())
         }
-
+        else if (TYPE_DATA > (headViews.size() + adapter.itemCount))
+        {
+            loadMoreListener?.loadMoreDown()
+        }
 
     }
+
+    interface OnLoadMoreListener
+    {
+        fun loadMoreDown()
+    }
+
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView?)
     {
