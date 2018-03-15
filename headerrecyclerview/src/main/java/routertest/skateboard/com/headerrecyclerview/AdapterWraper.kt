@@ -20,9 +20,7 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
     private var headViews: SparseArray<View> = SparseArray(3)
 
     private var footViews: SparseArray<View> = SparseArray(3)
-
-    var loadMoreListener: OnLoadMoreListener? = null
-
+    
     var canLoadMore = true
 
     constructor(adapter: Adapter<T>)
@@ -98,23 +96,6 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
         {
             adapter.onBindViewHolder(holder as T, position - headViews.size())
         }
-        else if (getItemViewType(position) >= (headViews.size() + adapter.itemCount))
-        {
-            if (canLoadMore)
-            {
-                loadMoreListener?.loadMoreDown()
-            }
-            else
-            {
-                holder.itemView.visibility = View.GONE
-            }
-        }
-
-    }
-
-    interface OnLoadMoreListener
-    {
-        fun loadMoreDown()
     }
 
 
