@@ -21,8 +21,6 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
 
     private var footViews: SparseArray<View> = SparseArray(3)
 
-    val TYPE_DATA: Int = 100
-
     var loadMoreListener: OnLoadMoreListener? = null
 
     constructor(adapter: Adapter<T>)
@@ -44,13 +42,8 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
 
     override fun getItemViewType(position: Int): Int
     {
-        return when
-        {
-            isHeadView(position) -> position
-            isFootView(position) -> position
-            else -> TYPE_DATA
-        }
 
+        return position
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder
@@ -58,7 +51,12 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
         return when
         {
             isHeadView(viewType) -> WraperViewHolder(headViews[viewType])
-            isFootView(viewType) -> WraperViewHolder(footViews[viewType - adapter.itemCount - headViews.size()])
+            isFootView(viewType) ->
+            {
+                val pos = viewType - adapter.itemCount - headViews.size()
+                println("viewType is $viewType adapter itemcount is ${adapter.itemCount} pos is $pos")
+                WraperViewHolder(footViews[pos])
+            }
             else -> adapter.onCreateViewHolder(parent, 0)
         }
 
@@ -95,7 +93,7 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
 
-        if (TYPE_DATA == getItemViewType(position))
+        if (!isFootView(position) && !isHeadView(position))
         {
             adapter.onBindViewHolder(holder as T, position - headViews.size())
         }
