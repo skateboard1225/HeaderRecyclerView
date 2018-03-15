@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity()
         generateData()
         recyclerList.layoutManager = LinearLayoutManager(this)
         val adapter = AdapterWraper(DataItemAdapter(dataList))
-        adapter.addFootView(LayoutInflater.from(this).inflate(R.layout.head_view_layout, null))
+        adapter.addFootView(LayoutInflater.from(this).inflate(R.layout.head_view_layout, recyclerList,false))
         recyclerList.adapter = adapter
         adapter.loadMoreListener = object : AdapterWraper.OnLoadMoreListener
         {

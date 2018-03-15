@@ -23,6 +23,8 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
 
     var loadMoreListener: OnLoadMoreListener? = null
 
+    var canLoadMore = true
+
     constructor(adapter: Adapter<T>)
     {
         this.adapter = adapter
@@ -54,7 +56,6 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
             isFootView(viewType) ->
             {
                 val pos = viewType - adapter.itemCount - headViews.size()
-                println("viewType is $viewType adapter itemcount is ${adapter.itemCount} pos is $pos")
                 WraperViewHolder(footViews[pos])
             }
             else -> adapter.onCreateViewHolder(parent, 0)
@@ -99,7 +100,14 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
         }
         else if (getItemViewType(position) >= (headViews.size() + adapter.itemCount))
         {
-            loadMoreListener?.loadMoreDown()
+            if (canLoadMore)
+            {
+                loadMoreListener?.loadMoreDown()
+            }
+            else
+            {
+                holder.itemView.visibility = View.GONE
+            }
         }
 
     }
@@ -122,17 +130,11 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
                 {
                     override fun getSpanSize(position: Int): Int
                     {
-                        if (isHeadView(position))
+                        return when
                         {
-                            return layoutManager.spanCount
-                        }
-                        else if (isFootView(position))
-                        {
-                            return layoutManager.spanCount
-                        }
-                        else
-                        {
-                            return 1
+                            isHeadView(position) -> layoutManager.spanCount
+                            isFootView(position) -> layoutManager.spanCount
+                            else -> 1
                         }
                     }
                 }
