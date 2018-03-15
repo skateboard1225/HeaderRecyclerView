@@ -99,7 +99,7 @@ class AdapterWraper<T : ViewHolder> : Adapter<ViewHolder>
         {
             adapter.onBindViewHolder(holder as T, position - headViews.size())
         }
-        else if (TYPE_DATA > (headViews.size() + adapter.itemCount))
+        else if (getItemViewType(position) >= (headViews.size() + adapter.itemCount))
         {
             loadMoreListener?.loadMoreDown()
         }
